@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,6 +38,17 @@ class Post
 
     #[ORM\Column]
     private ?bool $postPublished = null;
+
+    /**
+     * @var Collection<int, section>
+     */
+    #[ORM\ManyToMany(targetEntity: section::class, inversedBy: 'posts')]
+    private Collection $sections;
+
+    public function __construct()
+    {
+        $this->sections = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,6 +111,30 @@ class Post
     public function setPostPublished(bool $postPublished): static
     {
         $this->postPublished = $postPublished;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, section>
+     */
+    public function getSections(): Collection
+    {
+        return $this->sections;
+    }
+
+    public function addSection(section $section): static
+    {
+        if (!$this->sections->contains($section)) {
+            $this->sections->add($section);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(section $section): static
+    {
+        $this->sections->removeElement($section);
 
         return $this;
     }
