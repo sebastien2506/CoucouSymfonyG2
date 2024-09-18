@@ -1,4 +1,3 @@
-1
 # Coucou !
 
 Après la création de la database en `MySQL` nommée `coucousymfonyg2`,
@@ -8,6 +7,10 @@ Dans le `.env.local` on met le chemin vers la DB (en commentant le lien vers `po
 ```env
 DATABASE_URL="mysql://root:@127.0.0.1:3306/coucousymfonyg2?serverVersion=8.0.31&charset=utf8mb4"
 ```
+
+## Création de la DB
+
+    php bin/console doctrine:database:create
 
 ## Création d'entités
 
@@ -223,8 +226,14 @@ On fait la migration
 
     php bin/console d:m:m
 
-### Désinstallation de asset mapper
 
-    composer remove symfony/ux-turbo symfony/asset-mapper symfony/stimulus-bundle
-    
+### Les relations
+
+On va commencer par la relation `ManyToMany` depuis `Post` vers `Section`
+
+    php bin/console make:entity Post
+
+On choisit `sections` -> `ManyToMany` -> `Section` -> `yes` -> `posts`
+
+
 
